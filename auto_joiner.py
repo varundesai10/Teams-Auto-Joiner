@@ -85,18 +85,25 @@ class Team:
                          range(len(channel_names))]
 
     def check_blacklist(self):
+        #blacklist is actually whitelist!
         blacklist = config['blacklist']
         blacklist_item = next((bl_team for bl_team in blacklist if bl_team['team_name'] == self.name), None)
-        if blacklist_item is None:
-            return
-
-        if len(blacklist_item['channel_names']) == 0:
+        if blacklist_item is None: #no match!
             for channel in self.channels:
                 channel.blacklisted = True
-        else:
+        
+        elif(len(blacklist_item['channel_names']) != 0):
             for channel in self.channels:
-                if channel.name in blacklist_item['channel_names']:
+                if channel.name not in blacklist_item['channel_names']:
                     channel.blacklisted = True
+
+        #if len(blacklist_item['channel_names']) == 0:
+         #   for channel in self.channels:
+          #      channel.blacklisted = True
+        #else:
+         #   for channel in self.channels:
+          #      if channel.name in blacklist_item['channel_names']:
+           #         channel.blacklisted = True
 
 
 class Channel:
